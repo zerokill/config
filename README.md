@@ -1,0 +1,4 @@
+config
+======
+
+configuration for Maurice
