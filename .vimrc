@@ -83,7 +83,7 @@ python del powerline_setup
 
 let g:clang_use_library=1
 let g:clang_complete_macros=1
-let g:clang_library_path="/usr/lib"
+let g:clang_library_path="/usr/lib/llvm-3.2/lib"
 let g:clang_library_file = "libclang.so"
 let g:clang_use_library = 1
 let g:clang_snippets=1
@@ -95,7 +95,7 @@ let g:clang_hl_errors=1
 let g:ycm_key_list_select_completion = ['<Down>']
 let g:ycm_key_list_previous_completion = ['<Up>']
 
-set completeopt=menuone,menu
+set completeopt=menuone,menu,preview
 "set completeopt=menuone,menu,preview
 "               |       |    |
 "               |       |    + Použivať náhľadové okno
@@ -107,5 +107,5 @@ autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
 autocmd InsertLeave * if pumvisible() == 0|pclose|endif
 
 " Dopĺňanie po stlačení Ctrl+Space
-imap <C-Space> <C-X><C-I>
+imap <C-Space> <C-X><C-u>
 imap <Nul> <C-X><C-I>
