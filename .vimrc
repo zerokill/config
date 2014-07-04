@@ -9,9 +9,10 @@ call vundle#begin()
 
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
+Bundle 'Rip-Rip/clang_complete'
+
 " Track the engine.
 Plugin 'SirVer/ultisnips'
-
 " Snippets are separated from the engine. Add this if you want them:
 Plugin 'honza/vim-snippets'
 " Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
@@ -46,11 +47,6 @@ set scrolloff=2
 set backspace=eol,start,indent
 set whichwrap+=<,>,h,l
 
-map <C-j> <C-W>j
-map <C-k> <C-W>k
-map <C-h> <C-W>h
-map <C-l> <C-W>l
-
 set number              
 set showmatch           
 set showmode            
@@ -83,3 +79,33 @@ endif
 python from powerline.vim import setup as powerline_setup
 python powerline_setup()
 python del powerline_setup
+
+
+let g:clang_use_library=1
+let g:clang_complete_macros=1
+let g:clang_library_path="/usr/lib"
+let g:clang_library_file = "libclang.so"
+let g:clang_use_library = 1
+let g:clang_snippets=1
+let g:clang_snippets_engine='ultisnips'
+let g:clang_conceal_snippets=1
+let g:clang_periodic_quickfix=1
+let g:clang_hl_errors=1
+
+let g:ycm_key_list_select_completion = ['<Down>']
+let g:ycm_key_list_previous_completion = ['<Up>']
+
+set completeopt=menuone,menu
+"set completeopt=menuone,menu,preview
+"               |       |    |
+"               |       |    + Použivať náhľadové okno
+"               |       + Zobraziť popup menu pre dopĺňanie
+"               + Zobraziť menu aj keď je jediná zhoda
+
+" Automatické zatvorenie náhľadového okna pri presune kurzoru
+autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
+autocmd InsertLeave * if pumvisible() == 0|pclose|endif
+
+" Dopĺňanie po stlačení Ctrl+Space
+imap <C-Space> <C-X><C-I>
+imap <Nul> <C-X><C-I>
