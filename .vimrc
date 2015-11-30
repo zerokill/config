@@ -1,6 +1,60 @@
-set nocompatible              " be iMproved, required
-filetype off                  " required
+set tags=tags;/
 
+set number
+set wildmenu
+set laststatus=2
+
+set ignorecase
+set smartcase
+set smartindent
+set smarttab
+set magic
+
+set tabstop=4
+set shiftwidth=4
+set expandtab
+
+" options
+"set autoindent
+set errorformat=%f:%l:%c:\ warning:\ %m,%f:%l:%c:\ error:\ %m,%f:%l:%c:\fatal\ error:\ %m
+set hlsearch
+set ignorecase
+set incsearch
+set laststatus=2
+set listchars=eol:Ω,tab:╰─,trail:␣
+set makeprg=build
+set textwidth=0
+
+nnoremap <C-n> :bnext<CR>
+nnoremap <C-b> :bprevious<CR>
+
+nnoremap <C-Left> :tabprevious<CR>
+nnoremap <C-Right> :tabnext<CR>
+nnoremap <silent> <A-Left> :execute 'silent! tabmove ' . (tabpagenr()-2)<CR>
+nnoremap <silent> <A-Right> :execute 'silent! tabmove ' . tabpagenr()<CR>
+
+augroup qf
+    autocmd!
+    autocmd FileType qf set nobuflisted
+augroup END
+
+autocmd QuickFixCmdPost [^l]* nested cwindow
+autocmd QuickFixCmdPost    l* nested lwindow
+
+set pastetoggle=<F2>
+
+:set hidden
+
+au BufRead,BufNewFile *.sv set filetype=SystemVerilog
+au BufRead,BufNewFile *.mt set filetype=c
+au BufRead,BufNewFile *.c set filetype=c
+au BufRead,BufNewFile *.cc set filetype=cpp
+au BufRead,BufNewFile *.h set filetype=cpp
+au BufRead,BufNewFile *.py set filetype=python
+au! Syntax SystemVerilog source /home/mauricedaverveldt/.vim/syntax/systemverilog.vim
+
+set nocompatible              " be iMproved, required
+filetype off
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
@@ -8,104 +62,31 @@ call vundle#begin()
 "call vundle#begin('~/some/path/here')
 
 " let Vundle manage Vundle, required
-Plugin 'gmarik/Vundle.vim'
-Bundle 'Rip-Rip/clang_complete'
+Plugin 'VundleVim/Vundle.vim'
 
-" Track the engine.
-Plugin 'SirVer/ultisnips'
-" Snippets are separated from the engine. Add this if you want them:
-Plugin 'honza/vim-snippets'
-" Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<c-b>"
-let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+filetype plugin indent on
 
-" If you want :UltiSnipsEdit to split your window.
-let g:UltiSnipsEditSplit="vertical"
+"Bundle 'bkad/CamelCaseMotion'
+Plugin 'bling/vim-airline'
+Plugin 'tpope/vim-fugitive'
 
-" All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
-" To ignore plugin indent changes, instead use:
-"filetype plugin on
-"
-" Brief help
-" :PluginList          - list configured plugins
-" :PluginInstall(!)    - install (update) plugins
-" :PluginSearch(!) foo - search (or refresh cache first) for foo
-" :PluginClean(!)      - confirm (or auto-approve) removal of unused plugins
-"
-" see :h vundle for more details or wiki for FAQ
-" Put your non-Plugin stuff after this line
 
-set scrolloff=2
+let g:airline_powerline_fonts = 1
+let g:bufferline_echo = 0
+set noshowmode
+set notitle
 
-:nmap <C-s> :w<CR>
-:imap <C-s> <Esc>:w<CR>a
-:imap <C-s> <Esc><c-s>
+set runtimepath^=~/.vim/bundle/ctrlp.vim
 
-set backspace=eol,start,indent
-set whichwrap+=<,>,h,l
+let g:ctrlp_map = '<c-p>'
+let g:ctrlp_cmd = 'CtrlP'
 
-set number              
-set showmatch           
-set showmode            
-set showcmd             
-set ruler               
-set title               
-set wildmenu            
-
-set laststatus=2        
-set matchtime=2         
-
-set ignorecase          
-set smartcase           
-set smartindent         
-set smarttab            
-set magic               
-
-set tabstop=4
-set shiftwidth=4
-
-set hidden
-set mouse=v
-
-if &t_Co > 2 || has("gui_running")
-  syntax on          " enable colors
-  set hlsearch       " highlight search (very useful!)
-  set incsearch      " search incremently (search while typing)
-endif
-
-python from powerline.vim import setup as powerline_setup
-python powerline_setup()
-python del powerline_setup
-
-
-let g:clang_use_library=1
-let g:clang_complete_macros=1
-let g:clang_library_path="/usr/lib/llvm-3.2/lib"
-let g:clang_library_file = "libclang.so"
-let g:clang_use_library = 1
-let g:clang_snippets=1
-let g:clang_snippets_engine='ultisnips'
-let g:clang_conceal_snippets=1
-let g:clang_periodic_quickfix=1
-let g:clang_hl_errors=1
-
-let g:ycm_key_list_select_completion = ['<Down>']
-let g:ycm_key_list_previous_completion = ['<Up>']
-
-set completeopt=menuone,menu,preview
-"set completeopt=menuone,menu,preview
-"               |       |    |
-"               |       |    + Použivať náhľadové okno
-"               |       + Zobraziť popup menu pre dopĺňanie
-"               + Zobraziť menu aj keď je jediná zhoda
-
-" Automatické zatvorenie náhľadového okna pri presune kurzoru
-autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
-autocmd InsertLeave * if pumvisible() == 0|pclose|endif
-
-" Dopĺňanie po stlačení Ctrl+Space
-imap <C-Space> <C-X><C-u>
-imap <Nul> <C-X><C-I>
+" Highlight extra whitespace characters
+highlight ExtraWhitespace ctermbg=red guibg=red
+match ExtraWhitespace /\s\+$/
+autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
+autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
+autocmd InsertLeave * match ExtraWhitespace /\s\+$/
+autocmd BufWinLeave * call clearmatc
